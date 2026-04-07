@@ -1,89 +1,85 @@
 import React from 'react';
-import { Power, AlertTriangle, CheckCircle, Zap } from 'lucide-react';
+import { Power, AlertTriangle, CheckCircle, Zap, Terminal } from 'lucide-react';
 
 const ApplianceCard = ({ appliance }) => {
-  const { name, status, current, lastUpdated } = appliance;
+  const { name, status, current, lastUpdated, id } = appliance;
 
   const getStatusColor = (status) => {
     switch (status.toUpperCase()) {
-      case 'NORMAL': return 'var(--status-normal)';
-      case 'WARNING': return 'var(--status-warning)';
-      case 'FAULT': return 'var(--status-fault)';
-      default: return 'var(--text-dim)';
-    }
-  };
-
-  const getStatusIcon = (status) => {
-    switch (status.toUpperCase()) {
-      case 'NORMAL': return <CheckCircle size={18} />;
-      case 'WARNING': return <AlertTriangle size={18} />;
-      case 'FAULT': return <AlertTriangle size={18} />;
-      default: return <Power size={18} />;
+      case 'NORMAL': return 'var(--cyber-blue)';
+      case 'WARNING': return 'var(--alert-orange)';
+      case 'FAULT': return '#ff4444';
+      default: return '#94a3b8';
     }
   };
 
   const statusColor = getStatusColor(status);
 
   return (
-    <div className="glass-panel card-hover" style={{ 
-      padding: '1.5rem', 
-      display: 'flex', 
-      flexDirection: 'column', 
-      gap: '1.25rem', 
-      position: 'relative',
-      overflow: 'hidden'
-    }}>
-      {/* Dynamic Glow Accent */}
-      <div style={{ 
-        position: 'absolute', 
-        top: 0, 
-        left: 0, 
-        width: '4px', 
-        height: '100%', 
-        background: statusColor,
-        boxShadow: `0 0 15px ${statusColor}`
-      }} />
-
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h4 style={{ fontSize: '1.1rem', fontWeight: 700, margin: 0, color: '#fff' }}>{name}</h4>
-        <div style={{ color: statusColor, filter: `drop-shadow(0 0 5px ${statusColor})` }}>
-          {getStatusIcon(status)}
+    <div className="mecha-panel" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', minHeight: '320px' }}>
+      {/* HUD Accent Header */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div>
+          <span className="telemetry-text" style={{ fontSize: '0.7rem', color: statusColor, fontWeight: 800 }}>[UNIT_ID: 0{id}]</span>
+          <h4 style={{ fontSize: '1.5rem', fontWeight: 900, margin: '0.25rem 0 0 0', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#fff' }}>{name}</h4>
+        </div>
+        <div style={{ color: statusColor, filter: 'drop-shadow(0 0 5px var(--cyber-blue-glow))' }}>
+          <Terminal size={22} />
         </div>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+      {/* Main Telemetry Display */}
+      <div style={{ 
+        background: 'rgba(0,0,0,0.4)', 
+        padding: '1.75rem', 
+        border: '1px solid var(--gunmetal)',
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '1.25rem',
+        marginTop: '0.5rem'
+      }}>
         <div style={{ 
-          background: 'rgba(59, 130, 246, 0.1)', 
-          padding: '0.8rem', 
-          borderRadius: '0.75rem',
-          color: 'var(--accent-primary)',
-          boxShadow: 'inset 0 0 10px rgba(59, 130, 246, 0.1)'
+          color: statusColor, 
+          background: `rgba(${statusColor === 'var(--cyber-blue)' ? '0, 242, 255' : '255, 157, 0'}, 0.08)`,
+          padding: '1rem',
+          clipPath: 'polygon(0 0, 100% 0, 92% 100%, 0 100%)',
+          border: `1px solid ${statusColor}33`
         }}>
-          <Zap size={22} fill="var(--accent-primary)" />
+          <Zap size={28} fill={statusColor} />
         </div>
         <div>
-          <p style={{ fontSize: '0.75rem', color: 'var(--text-dim)', marginBottom: '0.2rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Current Load</p>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.4rem' }}>
-             <p style={{ fontSize: '1.5rem', fontWeight: 800, margin: 0, color: '#fff' }}>{current}</p>
-             <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-dim)' }}>Amps</span>
+          <p className="telemetry-text" style={{ marginBottom: '0.4rem', fontSize: '0.7rem', opacity: 0.8 }}>LOAD_INTAKE</p>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
+             <p style={{ fontSize: '2.2rem', fontWeight: 900, margin: 0, fontFamily: 'var(--font-mono)', color: '#fff', textShadow: `0 0 10px ${statusColor}33` }}>{current}</p>
+             <span style={{ fontSize: '1rem', fontWeight: 800, color: statusColor }}>AMP</span>
           </div>
         </div>
+        
+        {/* Right Corner Accent */}
+        <div style={{ position: 'absolute', top: '8px', right: '8px', width: '12px', height: '12px', borderRight: '2px solid var(--gunmetal)', borderTop: '2px solid var(--gunmetal)' }} />
       </div>
 
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center', 
-        marginTop: '0.5rem',
-        paddingTop: '1rem',
-        borderTop: '1px solid var(--border-color)'
-      }}>
-        <span className={`badge badge-${status.toLowerCase()}`}>
-          {status}
-        </span>
-        <span style={{ fontSize: '0.7rem', color: 'var(--text-dim)', fontWeight: 500 }}>
-          Updated: {new Date(lastUpdated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-        </span>
+      {/* Footer / Status */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+           <span className="telemetry-text" style={{ 
+             color: statusColor, 
+             background: 'rgba(255,255,255,0.03)', 
+             padding: '0.4rem 0.8rem', 
+             border: `1px solid ${statusColor}`,
+             fontSize: '0.75rem',
+             fontWeight: 900,
+             boxShadow: `0 0 10px ${statusColor}33`
+           }}>
+             {status}
+           </span>
+        </div>
+        
+        <div className="telemetry-text" style={{ fontSize: '0.65rem', textAlign: 'right', color: 'var(--text-dim)' }}>
+           LC_UPDT:<br/>
+           <span style={{ color: '#fff' }}>{new Date(lastUpdated).toLocaleTimeString([], { hour12: false })}</span>
+        </div>
       </div>
     </div>
   );

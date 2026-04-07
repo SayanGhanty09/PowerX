@@ -1,26 +1,26 @@
 import React from 'react';
-import { AlertTriangle, MapPin, Trash2, Bell } from 'lucide-react';
+import { AlertTriangle, MapPin, Trash2, Bell, ShieldAlert, Activity } from 'lucide-react';
 
 const FaultAlert = ({ alert }) => {
   const { timestamp, type, location } = alert;
 
   return (
-    <div className="card-hover" style={{ 
-      padding: '1rem', 
-      background: 'rgba(239, 68, 68, 0.03)', 
-      borderLeft: '4px solid var(--status-fault)',
-      borderRadius: '1rem',
-      marginBottom: '1rem',
-      border: '1px solid rgba(239, 68, 68, 0.1)',
-      transition: '0.3s all'
+    <div style={{ 
+      padding: '1.5rem', 
+      background: 'rgba(255, 68, 68, 0.08)', 
+      borderLeft: '6px solid #ff4444',
+      marginBottom: '1.25rem',
+      clipPath: 'polygon(0 0, 100% 0, 94% 100%, 0 100%)',
+      border: '1px solid rgba(255, 68, 68, 0.2)',
+      boxShadow: '0 0 15px rgba(255, 68, 68, 0.1)'
     }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
-        <h5 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: 'var(--status-fault)' }}>{type}</h5>
-        <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)', fontWeight: 500 }}>{timestamp}</span>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+        <h5 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 900, color: '#ff4444', letterSpacing: '0.1em', textTransform: 'uppercase' }}>[EVENT: {type}]</h5>
+        <span className="telemetry-text" style={{ fontSize: '0.7rem', opacity: 0.8 }}>{timestamp}</span>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--text-dim)' }}>
-        <MapPin size={14} />
-        <span>Node: {location}</span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.85rem', color: 'var(--text-dim)' }}>
+        <MapPin size={14} color="#ff4444" />
+        <span className="telemetry-text" style={{ fontWeight: 700 }}>NODE_LOC: {location}</span>
       </div>
     </div>
   );
@@ -28,30 +28,29 @@ const FaultAlert = ({ alert }) => {
 
 const FaultPanel = ({ alerts }) => {
   return (
-    <div className="glass-panel" style={{ height: '100%', display: 'flex', flexDirection: 'column', padding: '1.75rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <div style={{ background: 'rgba(239, 68, 68, 0.1)', padding: '0.5rem', borderRadius: '0.75rem' }}>
-             <Bell size={20} color="var(--status-fault)" />
-          </div>
-          <h3 style={{ fontSize: '1.15rem', color: '#fff', fontWeight: 700, margin: 0 }}>Incident Feed</h3>
+    <div className="mecha-panel" style={{ height: '100%', display: 'flex', flexDirection: 'column', padding: '2.5rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <ShieldAlert size={32} color="var(--alert-orange)" style={{ filter: 'drop-shadow(0 0 8px var(--alert-orange-glow))' }} />
+          <h3 style={{ fontSize: '1.6rem', color: '#fff', fontWeight: 900, margin: 0, letterSpacing: '0.08em', textTransform: 'uppercase' }}>INCIDENT_TRACKER</h3>
         </div>
         {alerts.length > 0 && (
-          <div className="badge badge-fault" style={{ fontSize: '0.65rem' }}>{alerts.length} NEW</div>
+          <div className="telemetry-text" style={{ color: '#ff4444', fontWeight: 900, background: 'rgba(255, 68, 68, 0.1)', padding: '0.4rem 0.8rem', border: '1px solid #ff4444', fontSize: '0.8rem' }}>
+             {alerts.length} UNRESOLVED
+          </div>
         )}
       </div>
 
       <div style={{ 
         flex: 1, 
         overflowY: 'auto', 
-        maxHeight: '450px',
-        paddingRight: '0.75rem',
-        scrollbarWidth: 'thin'
+        maxHeight: '480px',
+        paddingRight: '1rem'
       }}>
         {alerts.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '3rem 1rem', color: 'var(--text-dim)' }}>
-            <AlertTriangle size={32} style={{ marginBottom: '1rem', opacity: 0.3 }} />
-            <p style={{ fontSize: '0.9rem' }}>All systems operational. No active faults detected.</p>
+          <div style={{ textAlign: 'center', padding: '6rem 1rem', color: 'var(--gunmetal)' }}>
+            <Activity size={48} style={{ marginBottom: '2rem', opacity: 0.2 }} />
+            <p className="telemetry-text" style={{ fontSize: '0.85rem', fontWeight: 800 }}>ALL_SYSTEMS_GO // NO_INTERRUPTS</p>
           </div>
         ) : (
           alerts.map((alert) => (
@@ -61,27 +60,27 @@ const FaultPanel = ({ alerts }) => {
       </div>
 
       <div style={{ 
-        marginTop: '1.5rem', 
-        paddingTop: '1.5rem', 
-        borderTop: '1px solid var(--border-color)',
+        marginTop: '2rem', 
+        paddingTop: '2rem', 
+        borderTop: '2px solid var(--gunmetal)',
         textAlign: 'center'
       }}>
-        <button style={{ 
-          background: 'rgba(255,255,255,0.05)', 
-          border: '1px solid var(--border-color)', 
-          color: 'white', 
-          fontSize: '0.8rem',
-          padding: '0.6rem 1.2rem',
-          borderRadius: '0.75rem',
+        <button className="telemetry-text" style={{ 
+          background: 'var(--bg-main)', 
+          border: '2px solid var(--gunmetal)', 
+          color: '#fff', 
+          fontSize: '0.85rem',
+          padding: '0.8rem 1.75rem',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
-          gap: '0.5rem',
+          gap: '0.8rem',
           margin: '0 auto',
-          fontWeight: 600,
-          transition: '0.2s all'
+          fontWeight: 900,
+          clipPath: 'polygon(10% 0, 100% 0, 90% 100%, 0 100%)',
+          transition: '0.3s all'
         }}>
-          <Trash2 size={16} /> Clear Feed
+          <Trash2 size={18} /> PURGE_HUD_AUDIT
         </button>
       </div>
     </div>

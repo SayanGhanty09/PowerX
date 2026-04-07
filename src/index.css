@@ -1,36 +1,39 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Roboto+Mono:wght@300;400;500;700&display=swap');
 
 :root {
-  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-  line-height: 1.6;
+  /* Font Families */
+  --font-main: 'Rajdhani', sans-serif;
+  --font-mono: 'Roboto Mono', monospace;
+
+  font-family: var(--font-main);
+  line-height: 1.5;
   font-weight: 400;
 
   color-scheme: dark;
   color: #e2e8f0;
-  background-color: #000000;
-
-  /* Premium Design Tokens - Pitch Black Edition */
-  --bg-main: #000000;
-  --bg-sidebar: rgba(10, 10, 10, 0.85);
-  --bg-card: rgba(20, 20, 20, 0.6);
-  --bg-card-hover: rgba(30, 30, 30, 0.8);
   
-  --accent-primary: #3b82f6;
-  --accent-secondary: #8b5cf6;
-  --accent-glow: rgba(59,130,246,0.6);
+  /* Robotic Core Design Tokens - TERMINAL HACKER MODE */
+  --bg-main: #020402; /* Deeper black for Matrix contrast */
+  --bg-panel: rgba(10, 16, 10, 0.88);
+  --bg-panel-dark: #050805;
+  --bg-panel-hover: rgba(20, 30, 20, 0.95);
   
-  --border-color: rgba(255, 255, 255, 0.12);
-  --glass-effect: blur(24px) saturate(220%);
+  --cyber-blue: #00ff41; /* Phosphor Green */
+  --cyber-blue-glow: rgba(0, 255, 65, 0.6);
+  --text-glow: 0 0 12px rgba(0, 255, 65, 0.45);
   
-  /* Status Colors with Intense Glow */
-  --status-normal: #10b981;
-  --status-warning: #f59e0b;
-  --status-fault: #ef4444;
+  --alert-orange: #ff9d00;
+  --alert-orange-glow: rgba(255, 157, 0, 0.5);
   
-  --text-dim: #8899aa;
-  --sidebar-width: 280px;
-
-  --shadow-glow: 0 0 30px rgba(59, 130, 246, 0.2);
+  --gunmetal: #1a241a; /* Greenish gunmetal */
+  --border-industrial: rgba(0, 255, 65, 0.12);
+  --glass-mecha: blur(20px) saturate(180%);
+  
+  --sidebar-width: 230px;
+  --angle-cut: 20px;
+  
+  /* Enhanced Text Contrast */
+  --text-dim: #99ad99;
 }
 
 * {
@@ -44,153 +47,220 @@ body {
   background-color: var(--bg-main);
   overflow-x: hidden;
   color: #ffffff;
+  /* Green Phosphor Scanlines */
+  background-image: 
+    linear-gradient(rgba(0, 255, 65, 0.03) 50%, rgba(0, 0, 0, 0.15) 50%), 
+    linear-gradient(90deg, rgba(0, 255, 0, 0.01), rgba(0, 0, 0, 0), rgba(0, 255, 0, 0.01));
+  background-size: 100% 3px, 5px 100%;
 }
 
 #root {
+  display: block;
+  min-height: 100vh;
+}
+
+.app-wrapper {
   display: flex;
   min-height: 100vh;
   position: relative;
   z-index: 1;
 }
 
-/* Base Space Container */
-.bg-stars-container {
+/* Background Technical CAD Grid - Hacker Green */
+.bg-mecha-container {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 110%; /* Extra width for mouse parallax */
-  height: 110%; /* Extra height for mouse parallax */
-  z-index: -1;
-  background: #000000;
-  overflow: hidden;
-  will-change: transform;
-}
-
-.nebula {
-  position: absolute;
-  width: 800px;
-  height: 800px;
-  border-radius: 50%;
-  filter: blur(120px);
-  opacity: 0.2;
-  will-change: transform;
-}
-
-.nebula-1 { background: radial-gradient(circle, var(--accent-primary), transparent); top: -15%; left: -15%; }
-.nebula-2 { background: radial-gradient(circle, var(--accent-secondary), transparent); bottom: -15%; right: -15%; }
-
-/* Star Layers */
-.star-layer {
-  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  will-change: transform;
+  z-index: -1;
+  background-color: var(--bg-main);
+  overflow: hidden;
 }
 
-.star {
+.cad-grid {
   position: absolute;
-  background: white;
-  border-radius: 50%;
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+  width: 300%;
+  height: 300%;
+  background-image: 
+    linear-gradient(rgba(0, 255, 65, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+  transform: translate(-33%, -33%) perspective(1500px) rotateX(15deg);
+  pointer-events: none;
 }
 
-/* Layout Wrapper */
-.app-wrapper {
-  display: flex;
-  width: 100%;
-}
-
-.main-content {
-  flex: 1;
-  margin-left: var(--sidebar-width);
-  padding: 2.5rem;
-  transition: padding 0.3s ease;
-}
-
-/* Cards & Panels */
-.glass-panel {
-  background: var(--bg-card);
-  backdrop-filter: var(--glass-effect);
-  -webkit-backdrop-filter: var(--glass-effect);
-  border: 1px solid var(--border-color);
-  border-radius: 1.75rem;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border-color 0.3s ease;
-}
-
-.card-hover:hover {
-  transform: translateY(-10px);
-  background: var(--bg-card-hover);
-  border-color: rgba(59, 130, 246, 0.4);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 20px rgba(59, 130, 246, 0.15);
-}
-
-/* Sidebar & Navigation */
+/* Sidebar Update */
 .sidebar {
   width: var(--sidebar-width);
   height: 100vh;
   position: fixed;
   left: 0;
   top: 0;
-  background: var(--bg-sidebar);
-  backdrop-filter: var(--glass-effect);
-  border-right: 1px solid var(--border-color);
+  background: var(--bg-panel-dark);
+  border-right: 2px solid var(--gunmetal);
   display: flex;
   flex-direction: column;
-  padding: 2rem 1.5rem;
+  padding: 2.5rem 1.25rem;
   z-index: 100;
+  box-shadow: 15px 0 50px rgba(0, 0, 0, 0.9);
 }
 
+.main-content {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  padding: 2rem 1.75rem;
+  min-height: 100vh;
+  width: calc(100vw - var(--sidebar-width));
+  position: relative;
+}
+
+.page-container {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* Mecha Panel Adjustments - Hacker Style */
+.mecha-panel {
+  background: var(--bg-panel);
+  backdrop-filter: var(--glass-mecha);
+  border: 1px solid var(--border-industrial);
+  position: relative;
+  clip-path: polygon(0 0, calc(100% - var(--angle-cut)) 0, 100% var(--angle-cut), 100% 100%, var(--angle-cut) 100%, 0 calc(100% - var(--angle-cut)));
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 1.5rem;
+}
+
+.mecha-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--cyber-blue), transparent);
+  opacity: 0.8;
+  z-index: 2;
+}
+
+/* Typography Update - Terminal HUD Mode */
+.page-header {
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 10;
+}
+
+.page-title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 0 15px rgba(0, 255, 65, 0.6);
+  border-left: 8px solid var(--cyber-blue);
+  padding-left: 1.5rem;
+  line-height: 1.1;
+  transform: skewX(-3deg);
+  margin-bottom: 0.25rem;
+}
+
+.telemetry-text {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--cyber-blue);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-shadow: 0 0 8px rgba(0, 255, 65, 0.4);
+  text-transform: uppercase;
+}
+
+.value-prominent {
+  font-family: var(--font-mono);
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(0, 255, 65, 0.4); /* High contrast green glow */
+}
+
+/* Grid Utilities */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem; 
+  margin-bottom: 2.5rem;
+}
+
+/* Nav Link Hacker Mode */
 .nav-link {
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 1.25rem;
-  border-radius: 1.5rem;
+  padding: 1rem 1.5rem; 
+  margin-bottom: 0.4rem;
   color: var(--text-dim);
   text-decoration: none;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  margin-bottom: 0.75rem;
-  border: 1px solid transparent;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  transition: 0.3s all;
 }
 
 .nav-link.active {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(139, 92, 246, 0.2) 100%);
+  background: rgba(0, 255, 65, 0.08);
   color: #fff;
-  border: 1px solid rgba(59, 130, 246, 0.4);
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+  text-shadow: 0 0 10px var(--cyber-blue-glow);
+  border-left: 6px solid var(--cyber-blue);
+  clip-path: polygon(0 0, 100% 0, 94% 100%, 0 100%);
 }
 
-/* Page Titles */
-.page-title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  background: linear-gradient(to bottom right, #ffffff, #8899aa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 0.75rem;
+/* Animations */
+.data-bit {
+  position: absolute;
+  top: -20px;
+  width: 2px;
+  height: 20px;
+  background: linear-gradient(to bottom, transparent, var(--cyber-blue));
+  animation: dataStream linear infinite;
+  pointer-events: none;
+  z-index: 0;
 }
 
-/* Scrollbar Space Theme */
-::-webkit-scrollbar { width: 10px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { 
-  background: rgba(255, 255, 255, 0.05); 
-  border-radius: 10px; 
-  border: 3px solid transparent;
-  background-clip: content-box;
-}
-::-webkit-scrollbar-thumb:hover { background: rgba(59, 130, 246, 0.3); }
+@keyframes dataStream { to { transform: translateY(110vh); } }
 
-/* Responsive Grid Adjustments */
-@media (max-width: 1024px) {
+.move-scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(0, 255, 65, 0.1);
+  box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+  animation: scan 8s linear infinite;
+  z-index: 1;
+}
+
+.scanner-beam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(to bottom, rgba(0, 255, 65, 0.05), transparent);
+  animation: beam 12s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes scan { from { top: -10%; } to { top: 110%; } }
+@keyframes beam { 0%, 100% { transform: translateY(-100%); } 50% { transform: translateY(100vh); } }
+
+.mecha-fadeIn { animation: mechaFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@keyframes mechaFade { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 960px) {
   :root { --sidebar-width: 80px; }
+  .main-content { margin-left: 80px; width: calc(100vw - 80px); padding: 1.5rem 1rem; }
   .nav-text, .sidebar-logo-text { display: none; }
-}
-
-@media (max-width: 640px) {
-  .main-content { margin-left: 0; padding: 1.5rem; }
+  .nav-link { justify-content: center; padding: 1.25rem; }
 }

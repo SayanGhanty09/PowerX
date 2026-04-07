@@ -6,124 +6,116 @@ import {
   BarChart3, 
   History, 
   Zap, 
-  ShieldCheck,
-  ChevronRight,
-  Database
+  Settings,
+  Terminal,
+  Activity
 } from 'lucide-react';
 
 const Sidebar = () => {
   const menuItems = [
-    { name: 'Overview', path: '/', icon: LayoutDashboard },
-    { name: 'Appliances', path: '/appliances', icon: Cpu },
-    { name: 'Analytics', path: '/analytics', icon: BarChart3 },
-    { name: 'Event Logs', path: '/logs', icon: History },
+    { name: 'Core System', path: '/', icon: LayoutDashboard },
+    { name: 'Mecha Fleet', path: '/appliances', icon: Cpu },
+    { name: 'Telemetry', path: '/analytics', icon: BarChart3 },
+    { name: 'Access Logs', path: '/logs', icon: History },
   ];
 
   return (
     <aside className="sidebar">
+      {/* Brand Section - Pure Green Hacker Logo */}
       <div className="brand" style={{ 
         display: 'flex', 
         alignItems: 'center', 
         gap: '0.75rem', 
-        padding: '0.5rem',
-        marginBottom: '3rem'
+        paddingLeft: '0.2rem',
+        marginBottom: '3rem',
+        position: 'relative'
       }}>
         <div style={{ 
-          background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
-          width: '38px',
-          height: '38px',
-          borderRadius: '12px',
+          background: 'rgba(0, 0, 0, 0.4)',
+          width: '42px',
+          height: '42px',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          color: 'white',
-          boxShadow: '0 0 20px rgba(59, 130, 246, 0.4)',
-          border: '1px solid rgba(255, 255, 255, 0.2)'
+          color: 'var(--cyber-blue)',
+          border: '2px solid var(--cyber-blue)',
+          boxShadow: '0 0 12px var(--cyber-blue-glow)',
+          clipPath: 'polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%)',
+          flexShrink: 0
         }}>
-          <Zap size={22} fill="white" />
+          <Zap size={22} fill="var(--cyber-blue)" />
         </div>
         <div className="sidebar-logo-text">
           <h2 style={{ 
-            fontWeight: 800, 
-            fontSize: '1.25rem', 
-            letterSpacing: '-0.03em',
+            fontWeight: 900, 
+            fontSize: '1.15rem', 
+            letterSpacing: '0.05em',
             margin: 0,
-            background: 'linear-gradient(to right, #fff, #94a3b8)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent'
+            textTransform: 'uppercase',
+            color: '#fff',
+            lineHeight: 1
           }}>
-            PowerX Hub
+            ROBO-CORE
           </h2>
-          <p style={{ fontSize: '0.65rem', color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-            Smart Monitor
+          <p className="telemetry-text" style={{ fontSize: '0.55rem', marginTop: '0.25rem', opacity: 0.7 }}>
+             OS_v4.2 // ONLINE
           </p>
         </div>
       </div>
 
-      <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+      <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+        <p className="sidebar-logo-text" style={{ 
+          fontSize: '0.62rem', 
+          color: 'var(--gunmetal)', 
+          fontWeight: 900, 
+          letterSpacing: '0.2em', 
+          marginBottom: '0.75rem', 
+          paddingLeft: '1.5rem',
+          textTransform: 'uppercase',
+          opacity: 0.6 
+        }}>INTERFACE_CTRL</p>
+        
         {menuItems.map((item) => (
           <NavLink 
             key={item.path} 
             to={item.path} 
             className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
-            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <item.icon size={20} />
-              <span className="nav-text">{item.name}</span>
-            </div>
-            {/* Active Indicator Chevron */}
-            <div className="nav-text active-chevron">
-               <ChevronRight size={14} style={{ opacity: 0.5 }} />
-            </div>
+            <item.icon size={18} style={{ flexShrink: 0 }} />
+            <span className="nav-text" style={{ fontWeight: 800 }}>{item.name}</span>
           </NavLink>
         ))}
       </nav>
 
-      <div className="sidebar-footer" style={{ 
+      {/* Sidebar Footer - Professional Compact Stats */}
+      <div className="sidebar-logo-text" style={{ 
         padding: '1.25rem', 
         marginTop: 'auto',
-        background: 'rgba(59, 130, 246, 0.03)',
-        borderRadius: '1.5rem',
-        border: '1px solid rgba(59, 130, 146, 0.1)',
-        position: 'relative',
-        overflow: 'hidden'
+        background: 'rgba(0, 0, 0, 0.3)',
+        border: '1px solid var(--border-industrial)',
+        clipPath: 'polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%)',
+        position: 'relative'
       }}>
-        {/* Decorative Glow */}
-        <div style={{ 
-          position: 'absolute', 
-          top: '-20px', 
-          right: '-20px', 
-          width: '60px', 
-          height: '60px', 
-          background: 'var(--accent-primary)', 
-          filter: 'blur(30px)', 
-          opacity: 0.2 
-        }} />
-        
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
-          <div className="dot dot-active" style={{ color: 'var(--status-normal)', background: 'var(--status-normal)' }}></div>
-          <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#fff' }}>Secure Node</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+          <div style={{ width: '6px', height: '6px', background: 'var(--cyber-blue)', boxShadow: '0 0 8px var(--cyber-blue)', borderRadius: '1px' }}></div>
+          <span style={{ fontSize: '0.65rem', fontWeight: 900, letterSpacing: '0.1em', color: '#fff' }}>KERNEL_SAFE</span>
         </div>
         
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-dim)', marginBottom: '0.25rem' }}>
-          <Database size={12} />
-          <span style={{ fontSize: '0.65rem' }}>Consentium v2.4</span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-dim)' }}>
-          <ShieldCheck size={12} />
-          <span style={{ fontSize: '0.65rem' }}>SSL Encrypted</span>
+        <div className="telemetry-text" style={{ fontSize: '0.6rem', lineHeight: '1.4', opacity: 0.8 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span>CPU</span>
+            <span style={{ color: '#fff' }}>12%</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span>TEMP</span>
+            <span style={{ color: '#fff' }}>42°C</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--alert-orange)' }}>
+            <span>LINK</span>
+            <span style={{ fontSize: '0.5rem' }}>[||--]</span>
+          </div>
         </div>
       </div>
-
-      <style>{`
-        .nav-link.active .active-chevron { 
-          opacity: 1; 
-          transform: translateX(4px); 
-          transition: all 0.3s ease; 
-        }
-        .nav-link:not(.active) .active-chevron { display: none; }
-      `}</style>
     </aside>
   );
 };

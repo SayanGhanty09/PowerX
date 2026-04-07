@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Activity, 
-  TrendingUp, 
-  AlertTriangle, 
-  Cpu, 
-  Wifi, 
-  Clock,
-  ArrowUpRight,
-  ArrowDownRight
+  Monitor, 
+  Terminal,
+  Zap,
 } from 'lucide-react';
 import SummaryCards from '../components/SummaryCards';
 import FaultPanel from '../components/FaultPanel';
@@ -32,81 +28,83 @@ const DashboardPage = () => {
   }, []);
 
   return (
-    <div className="page-container" style={{ animation: 'fadeIn 0.5s ease-out' }}>
-      <header className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+    <div className="page-container mecha-fadeIn">
+      <header className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
         <div>
-          <h1 className="page-title">System Overview</h1>
-          <p className="text-dim">Real-time health monitoring & diagnostics for Smart Appliances.</p>
-        </div>
-        <div style={{ textAlign: 'right', color: 'var(--text-dim)', fontSize: '0.9rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'flex-end', color: 'var(--text-primary)' }}>
-            <Clock size={16} />
-            <span style={{ fontWeight: 600 }}>{currentTime.toLocaleTimeString()}</span>
+          <span className="telemetry-text" style={{ fontSize: '0.65rem', letterSpacing: '0.12em', opacity: 0.8 }}>[ DEPT: CENTRAL_MAINFRAME_v4.2 ]</span>
+          <h1 className="page-title">SYSTEM_CORE</h1>
+          <div style={{ display: 'flex', gap: '0.6rem', marginTop: '0.15rem' }}>
+             <div className="telemetry-text" style={{ fontSize: '0.6rem', display: 'flex', alignItems: 'center', gap: '0.3rem', color: 'var(--alert-orange)' }}>
+                <Monitor size={10} /> HOST_STATUS_UP
+             </div>
+             <div className="telemetry-text" style={{ fontSize: '0.6rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                <Activity size={10} /> KERNEL_STABLE
+             </div>
           </div>
-          <span>{currentTime.toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' })}</span>
+        </div>
+        <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--cyber-blue)', textShadow: 'var(--text-glow)', fontFamily: 'var(--font-mono)' }}>
+            {currentTime.toLocaleTimeString([], { hour12: false })}
+          </div>
+          <span className="telemetry-text" style={{ color: 'var(--text-dim)', letterSpacing: '0.15em', fontSize: '0.65rem' }}>SYNC_REALTIME</span>
         </div>
       </header>
 
       <SummaryCards data={stats} />
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: '1.5rem', marginTop: '2rem' }}>
-        {/* Main Insight Section */}
-        <div className="card glass-panel" style={{ gridColumn: '1 / 9', padding: '2rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-            <h3 style={{ fontSize: '1.25rem' }}>Network Performance</h3>
-            <div className="badge badge-normal">Healthy</div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: '1.25rem', marginTop: '1.5rem' }}>
+        {/* Dynamic Telemetry Panel - Rescaled */}
+        <div className="mecha-panel" style={{ gridColumn: '1 / 9', padding: '1.5rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.75rem' }}>
+            <div style={{ borderLeft: '3px solid var(--cyber-blue)', paddingLeft: '0.6rem' }}>
+               <h3 style={{ fontSize: '1.3rem', fontWeight: 900, textTransform: 'uppercase', color: '#fff' }}>TELEMETRY_ENGINE</h3>
+               <p className="telemetry-text" style={{ fontSize: '0.6rem', color: 'var(--text-dim)' }}>SRC: INDUSTRIAL_ESP32</p>
+            </div>
+            <div className="telemetry-text" style={{ color: 'var(--cyber-blue)', border: '1px solid rgba(0, 242, 255, 0.3)', padding: '0.35rem 0.7rem', fontSize: '0.6rem' }}>AUTO_CAL_ON</div>
           </div>
           
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
-            <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.05)' }}>
-              <p style={{ fontSize: '0.8rem', color: 'var(--text-dim)', marginBottom: '0.5rem' }}>Cloud Latency</p>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
-                <span style={{ fontSize: '1.5rem', fontWeight: 700 }}>42ms</span>
-                <span style={{ fontSize: '0.75rem', color: 'var(--status-normal)', display: 'flex', alignItems: 'center' }}>
-                  <ArrowDownRight size={14} /> 12%
-                </span>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+            <div style={{ padding: '1rem', background: 'rgba(0,0,0,0.3)', border: '1px solid var(--border-industrial)', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, width: '10px', height: '2px', background: 'var(--cyber-blue)' }} />
+              <p className="telemetry-text" style={{ marginBottom: '0.5rem', fontSize: '0.55rem', opacity: 0.8 }}>MSEC_LATENCY</p>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.3rem' }}>
+                <span className="value-prominent" style={{ fontSize: '1.8rem' }}>0.4</span>
+                <span className="telemetry-text" style={{ fontSize: '0.7rem', color: '#10b981' }}>-12%</span>
               </div>
             </div>
-            <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.05)' }}>
-              <p style={{ fontSize: '0.8rem', color: 'var(--text-dim)', marginBottom: '0.5rem' }}>Uptime Rate</p>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
-                <span style={{ fontSize: '1.5rem', fontWeight: 700 }}>99.9%</span>
-                <span style={{ fontSize: '0.75rem', color: 'var(--status-normal)', display: 'flex', alignItems: 'center' }}>
-                  <ArrowUpRight size={14} /> 0.1%
-                </span>
+            <div style={{ padding: '1rem', background: 'rgba(0,0,0,0.3)', border: '1px solid var(--border-industrial)' }}>
+              <p className="telemetry-text" style={{ marginBottom: '0.5rem', fontSize: '0.55rem', opacity: 0.8 }}>UP_INTEGRITY</p>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.3rem' }}>
+                <span className="value-prominent" style={{ fontSize: '1.8rem' }}>99.9</span>
+                <span className="telemetry-text" style={{ fontSize: '0.7rem', color: 'var(--cyber-blue)' }}>STABIL</span>
               </div>
             </div>
-            <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.05)' }}>
-              <p style={{ fontSize: '0.8rem', color: 'var(--text-dim)', marginBottom: '0.5rem' }}>Sync Freq</p>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
-                <span style={{ fontSize: '1.5rem', fontWeight: 700 }}>5.0s</span>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>Static</span>
+            <div style={{ padding: '1rem', background: 'rgba(0,0,0,0.3)', border: '1px solid var(--border-industrial)' }}>
+              <p className="telemetry-text" style={{ marginBottom: '0.5rem', fontSize: '0.55rem', opacity: 0.8 }}>SYNC_CYC</p>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.3rem' }}>
+                <span className="value-prominent" style={{ fontSize: '1.8rem' }}>5.0</span>
+                <span className="telemetry-text" style={{ fontSize: '0.7rem' }}>SEC</span>
               </div>
             </div>
           </div>
 
-          <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(59, 130, 246, 0.05)', borderRadius: '1rem', border: '1px solid rgba(59, 130, 246, 0.1)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <div style={{ background: 'var(--accent-primary)', padding: '0.75rem', borderRadius: '0.75rem' }}>
-                <Wifi size={24} color="white" />
-              </div>
-              <div>
-                <h4 style={{ fontSize: '1rem', marginBottom: '0.25rem' }}>Consentium IoT Infrastructure</h4>
-                <p style={{ fontSize: '0.8rem', color: 'var(--text-dim)' }}>Connected via Secure Gateway Node. Latency optimized for ESP32 modules.</p>
-              </div>
-            </div>
+          <div style={{ marginTop: '2rem', padding: '1.25rem', border: '1px solid rgba(0, 242, 255, 0.2)', background: 'rgba(0, 242, 255, 0.04)', position: 'relative' }}>
+             <div style={{ position: 'absolute', top: 0, left: 0, width: '3px', height: '100%', background: 'linear-gradient(to bottom, var(--cyber-blue), transparent)' }} />
+             <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+                <Terminal size={24} color="var(--cyber-blue)" style={{ filter: 'drop-shadow(0 0 6px var(--cyber-blue-glow))', flexShrink: 0 }} />
+                <div>
+                  <h4 style={{ fontSize: '1rem', fontWeight: 800, textTransform: 'uppercase', color: '#fff', marginBottom: '0.1rem' }}>MECHA_SEC_HANDSHAKE</h4>
+                  <p className="telemetry-text" style={{ fontSize: '0.65rem', color: 'var(--text-dim)', lineHeight: '1.3', textTransform: 'none' }}>RSA_2048 Cryptography Verified. CID: CYB-P42. Active.</p>
+                </div>
+             </div>
           </div>
         </div>
 
-        {/* Alerts Section */}
+        {/* Real-time Alerts - Compacted */}
         <div style={{ gridColumn: '9 / -1' }}>
           <FaultPanel alerts={mockAlerts} />
         </div>
       </div>
-
-      <style>{`
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-      `}</style>
     </div>
   );
 };

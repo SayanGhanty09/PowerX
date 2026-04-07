@@ -1,54 +1,40 @@
 import React, { useEffect, useRef, useMemo } from 'react';
 
 const BackgroundEffect = () => {
-  const containerRef = useRef(null);
-  const layersRef = useRef([]); // To keep track of our 3 parallax layers
-  const mousePos = useRef({ x: 0, y: 0 }); // Target mouse position
-  const currentPos = useRef({ x: 0, y: 0 }); // Current smoothed position
+  const ringsRef = useRef([]);
+  const mousePos = useRef({ x: 0, y: 0 });
+  const currentPos = useRef({ x: 0, y: 0 });
 
-  // Linear interpolation (lerp) function for smoothing
+  // Linear interpolation (lerp) for smooth mouse reaction
   const lerp = (start, end, amt) => (1 - amt) * start + amt * end;
 
-  // Generate star layers once
-  const starLayers = useMemo(() => {
-    const generateLayer = (count, sizeRange) => {
-      return Array.from({ length: count }).map((_, i) => ({
-        id: i,
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-        size: `${Math.random() * sizeRange.max + sizeRange.min}px`,
-        opacity: Math.random() * 0.7 + 0.3,
-      }));
-    };
-
-    return [
-      { id: 'far', stars: generateLayer(80, { min: 0.5, max: 1.2 }), factor: 0.01 },
-      { id: 'mid', stars: generateLayer(45, { min: 1.5, max: 2.2 }), factor: 0.02 },
-      { id: 'near', stars: generateLayer(15, { min: 2.5, max: 3.5 }), factor: 0.035 },
-    ];
-  }, []);
+  // Matrix Binary Stream (Green Bits)
+  const dataBits = useMemo(() => Array.from({ length: 40 }).map((_, i) => ({
+    id: i,
+    left: `${Math.random() * 100}%`,
+    delay: `${Math.random() * 8}s`,
+    duration: `${6 + Math.random() * 6}s`,
+    opacity: 0.05 + Math.random() * 0.3
+  })), []);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
-      // Scale mouse position to range [-0.5, 0.5]
       mousePos.current.x = (e.clientX / window.innerWidth) - 0.5;
       mousePos.current.y = (e.clientY / window.innerHeight) - 0.5;
     };
 
     let animationFrameId;
     const animate = () => {
-      // Smoothly update current position towards targeted mouse position
-      // Using a lerp amt of 0.05 for a nice, fluid "drag" effect
-      currentPos.current.x = lerp(currentPos.current.x, mousePos.current.x, 0.05);
-      currentPos.current.y = lerp(currentPos.current.y, mousePos.current.y, 0.05);
+      currentPos.current.x = lerp(currentPos.current.x, mousePos.current.x, 0.08);
+      currentPos.current.y = lerp(currentPos.current.y, mousePos.current.y, 0.08);
 
-      // Apply transforms to each layer with their respective parallax factors
-      layersRef.current.forEach((layer, idx) => {
-        if (layer) {
-          const factor = starLayers[idx].factor * 800; // Amplify the movement scale
+      ringsRef.current.forEach((ring, idx) => {
+        if (ring) {
+          const factor = (idx + 1) * 35;
           const tx = currentPos.current.x * factor;
           const ty = currentPos.current.y * factor;
-          layer.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+          const rotation = (idx % 2 === 0 ? 1 : -1) * (Date.now() / 3500) * (idx + 1);
+          ring.style.transform = `translate3d(${tx}px, ${ty}px, 0) rotate(${rotation}deg)`;
         }
       });
 
@@ -62,42 +48,84 @@ const BackgroundEffect = () => {
       window.removeEventListener('mousemove', handleMouseMove);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [starLayers]);
+  }, []);
 
   return (
-    <div ref={containerRef} className="bg-stars-container">
-      {/* Immovable Nebulas (Subtle Contrast) */}
-      <div className="nebula nebula-1" style={{ opacity: 0.1 }} />
-      <div className="nebula nebula-2" style={{ opacity: 0.15 }} />
+    <div className="bg-mecha-container">
+      {/* CAD Grid System (Hacker Green) */}
+      <div className="cad-grid" />
       
-      {/* 3 Parallax Star Layers */}
-      {starLayers.map((layer, index) => (
+      {/* HUD Scanlines */}
+      <div className="move-scanline" />
+      <div className="scanner-beam" />
+
+      {/* Matrix Binary Stream (Data Bits) */}
+      {dataBits.map(bit => (
         <div 
-          key={layer.id} 
-          ref={(el) => (layersRef.current[index] = el)}
-          className="star-layer"
+          key={bit.id} 
+          className="data-bit" 
           style={{ 
+            left: bit.left, 
+            animationDelay: bit.delay,
+            animationDuration: bit.duration,
+            opacity: bit.opacity
+          }} 
+        />
+      ))}
+
+      {/* Hacker HUD Rings (Pure Green) */}
+      {[450, 650, 850].map((size, index) => (
+        <div
+          key={index}
+          ref={el => ringsRef.current[index] = el}
+          style={{
+            position: 'absolute',
+            top: 'calc(50% - ' + (size/2) + 'px)',
+            left: 'calc(50% - ' + (size/2) + 'px)',
+            width: size + 'px',
+            height: size + 'px',
+            border: (index === 1 ? '2px' : '1px') + ' dashed rgba(0, 255, 65, ' + (0.12 - index * 0.03) + ')',
+            borderRadius: '50%',
             pointerEvents: 'none',
-            willChange: 'transform' // Tell GPU to expect movement
+            willChange: 'transform',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            boxShadow: index === 0 ? 'inset 0 0 40px rgba(0, 255, 65, 0.03)' : 'none'
           }}
         >
-          {layer.stars.map((star) => (
-            <div 
-              key={star.id} 
-              className="star" 
-              style={{
-                left: star.left,
-                top: star.top,
-                width: star.size,
-                height: star.size,
-                opacity: star.opacity,
-                backgroundColor: star.size > 2.5 ? '#fff' : '#e2e8f0',
-                boxShadow: star.size > 2.5 ? '0 0 10px rgba(255,255,255,0.4)' : 'none'
-              }} 
-            />
-          ))}
+          {/* Schematic Crosshair Elements */}
+          <div style={{ 
+            width: '15px', 
+            height: '1px', 
+            background: 'var(--cyber-blue)', 
+            position: 'absolute', 
+            left: '-8px', 
+            opacity: 0.4 
+          }} />
+          <div style={{ 
+            width: '1px', 
+            height: '15px', 
+            background: 'var(--cyber-blue)', 
+            position: 'absolute', 
+            top: '-8px', 
+            opacity: 0.4 
+          }} />
         </div>
       ))}
+
+      {/* CRT Phospors Grain Overlay */}
+      <div style={{ 
+        position: 'absolute', 
+        top: 0, 
+        left: 0, 
+        width: '100%', 
+        height: '100%', 
+        backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")',
+        opacity: 0.1,
+        mixBlendMode: 'overlay',
+        pointerEvents: 'none'
+      }} />
     </div>
   );
 };
