@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import BackgroundEffect from './components/BackgroundEffect';
+import SensorDashboard from './pages/SensorDashboard';
 import DashboardPage from './pages/DashboardPage';
 import AppliancesPage from './pages/AppliancesPage';
 import AnalyticsPage from './pages/AnalyticsPage';
@@ -15,7 +16,8 @@ function App() {
         <Sidebar />
         <main className="main-content fadeIn">
           <Routes>
-            <Route path="/" element={<DashboardPage />} />
+            <Route path="/" element={<SensorDashboard />} />
+            <Route path="/system" element={<DashboardPage />} />
             <Route path="/appliances" element={<AppliancesPage />} />
             <Route path="/analytics" element={<AnalyticsPage />} />
             <Route path="/logs" element={<LogsPage />} />

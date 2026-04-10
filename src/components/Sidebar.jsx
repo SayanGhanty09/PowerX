@@ -13,7 +13,8 @@ import {
 
 const Sidebar = () => {
   const menuItems = [
-    { name: 'Core System', path: '/', icon: LayoutDashboard },
+    { name: 'Pulse Dashboard', path: '/', icon: Activity },
+    { name: 'Core System', path: '/system', icon: LayoutDashboard },
     { name: 'Mecha Fleet', path: '/appliances', icon: Cpu },
     { name: 'Telemetry', path: '/analytics', icon: BarChart3 },
     { name: 'Access Logs', path: '/logs', icon: History },
