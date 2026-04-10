@@ -74,6 +74,22 @@ const apiService = {
     }
   },
 
+  // GET: Fetch sensor data from Consentium IoT
+  fetchSensorData: async (apiKey) => {
+    try {
+      // Endpoint provided by user: https://api.consentiumiot.com/recieve?api_key=
+      const response = await axios.get(`https://api.consentiumiot.com/recieve?api_key=${apiKey}`);
+      
+      // Consentium data normalization:
+      // Expecting a list of values or a single object.
+      // We'll return the raw data and let the component handle standard forms.
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching data from Consentium IoT:', error);
+      return null;
+    }
+  },
+
   // POST: Send control command to ESP32 via Cloud
   sendDeviceCommand: async (deviceId, command) => {
     try {

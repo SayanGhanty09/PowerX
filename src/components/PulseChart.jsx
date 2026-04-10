@@ -39,12 +39,10 @@ const PulseChart = ({ data, isUnstable }) => {
           />
           <YAxis 
             domain={[40, 140]} 
-            stroke="rgba(0, 255, 65, 0.3)" 
-            tick={{ fill: 'var(--text-dim)', fontSize: 10 }}
-            tickLine={false}
-            axisLine={false}
+            hide={true}
           />
           <Tooltip 
+            formatter={(value) => [`${value.toFixed(1)} [RAW]`, 'SIGNAL_OHMIC']}
             contentStyle={{ 
               background: 'var(--bg-panel-dark)', 
               border: '1px solid var(--border-industrial)',
